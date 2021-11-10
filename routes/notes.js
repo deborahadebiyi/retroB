@@ -1,14 +1,17 @@
 const router = require("express").Router();
 const Note = require("../models/Note")
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
 //create note
-router.post("/", async(req,res)=>{
-    const note = new Note(req.body)
+router.post("/create", async(req,res)=>{
     try{
+        const note = new Note(req.body)
         const savedNote = await note.save();
         res.status(200).json(savedNote)
-    }catch{
+    }catch(err){
         res.status(500).json(err)
+        res.redirect("/retrospective")
     }
 })
 
@@ -59,18 +62,11 @@ router.put("/:id/like", async(req,res)=>{
     }
     
 })
-
 //get all notes
 router.get("/retrospective", async(req, res)=>{
     try{
-        const currentUser = await User.findById(req.body.userId);
-        const userNotes = await Note.find({userId: currentUser._id});
-        const teamNotes = await Promise.all(
-            currentUser.following.map((teammateId) =>{
-                return Note.find({userId: teammateId});
-            })
-        );
-        res.json(userNotes.concat(...teamNotes))
+       const allNotes = await Note.find();
+       res.json({allNotes: message});
 
     }catch(err){
         res.status(500).json(err);

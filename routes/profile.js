@@ -2,6 +2,10 @@ const router = require("express").Router();
 const User = require("../models/User");
 
 //UPDATE USER
+router.get("/profile", (req,res)=>{
+  res.send("This is your profile page")
+})
+
 router.put("/:id", async (req, res) => {
     if (req.body.userId === req.params.id || req.user.isAdmin){
         if (req.body.password){

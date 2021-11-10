@@ -2,8 +2,8 @@ const mongoose = require("mongoose")
 
 const NoteSchema = new mongoose.Schema({
     userId: {
-        type: String,
-        required: true
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User"
     },
     message: {
         type: String,

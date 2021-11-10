@@ -19,10 +19,10 @@ mongoose.connection.on("connected", ()=>{
     console.log("Successfully connected to mongo database")
 })
 //routes
-// const userRoute = require("./routes/users");
 const authRoute = require("./routes/auth");
 const profileRoute = require("./routes/profile");
-const notesRoute = require("./routes/notes")
+const notesRoute = require("./routes/notes");
+const homeRoute = require("./routes/home");
 
 //middleware
 app.use(express.json()); //used to extract data from body of requests
@@ -31,11 +31,12 @@ app.use(morgan("common"));
 app.use(cookieParser());
 
 
-// app.use("/users", userRoute)
+app.use("/", homeRoute)
 app.use("/auth", authRoute)
 app.use("/profile", profileRoute)
-app.use("/notes", notesRoute)
-app.get("notes/retrospective",requireAuth)
+app.use("/notes", requireAuth, notesRoute)
+
+
 
 
 module.exports = app;

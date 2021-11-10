@@ -24,24 +24,18 @@ router.post("/register", async(req,res)=>{
             username: req.body.username,
             password: hashedPassword,
         })
-        //creates jwt token
-        const token = createToken(user._id)
-        res.cookie('jwt', token, {
-            httpOnly: true,
-            maxAge: maxValidity * 1000
-        });
-        res.json({user: user._id});
 
         //saves participant to db and returns response
         await user.save((err)=>{
             if(err) {
-                res.status(400).send("Unsuccessful registration")
+                res.status(400).send(`Username already in use: ${err}`)
                 console.log('Unable to save user');
             } else {
-                //res.redirect(201, "/login")
                 console.log("New user has been saved");
+                res.redirect("/home")
             } 
         });
+
 
     } catch(registerErr){
         res.status(500).send("Failed registration")
@@ -54,22 +48,22 @@ router.post("/login", async(req,res)=>{
     try{
         const user = await User.findOne({username: req.body.username})
             if(!user) {
-                res.status(404).send("User not found");
-            } 
-    
+                return res.status(404).send("User not found");
+            }
+ 
         const isMatch = await bcrypt.compare(req.body.password, user.password)
             if (isMatch == false) {
-                res.status(400).send("Invalid credentials");
+                res.send("Invalid credentials");
             } else {
-                res.redirect(200, "/profile")
+                const token = createToken(user._id)
+                res
+                .cookie('jwt', token, {
+                    httpOnly: true,
+                    maxAge: maxValidity * 1000
+                })
+                .redirect("/notes/retrospective")
                 console.log("Login success");
-            } 
-            const token = createToken(user._id)
-            res.cookie('jwt', token, {
-                httpOnly: true,
-                maxAge: maxValidity * 1000
-            });
-            res.json({user: user._id});
+            }
 
     } catch(loginErr) {
         console.log(`This is the login error: ${loginErr}`);
@@ -78,6 +72,11 @@ router.post("/login", async(req,res)=>{
 })
 
 //LOGOUT
+router.get("/logout", (req,res)=>{
+    res.cookie('jwt', "", {maxAge: 1});
+    res.redirect("/home");
+    console.log()
+})
 
 
 

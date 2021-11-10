@@ -1,7 +1,25 @@
-POST http://localhost:5000/login
+POST http://localhost:5000/auth/register
 Content-Type: application/json
 
 {
-    "username": "hello",
-    "password": "chicken"
+    "username": "logic",
+    "password": "change"
+}
+
+###
+POST http://localhost:5000/auth/login
+Content-Type: application/json
+
+{
+    "username": "logic",
+    "password": "change"
+}
+
+
+###
+POST http://localhost:5000/notes/create
+Content-Type: application/json
+
+{
+    "message": "This is a note"
 }

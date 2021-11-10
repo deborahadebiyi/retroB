@@ -6,14 +6,14 @@ const requireAuth = (req, res, next)=>{
         jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decodedToken)=>{
             if(err){
                 console.log(err);
-                res.redirect("/login");
+                res.redirect("/home");
             }else{
-                console.log(decodedToken);
+                console.log(`DECODED TOKEN ${decodedToken}`);
                 next();
             }
         })
     }else{
-        res.redirect("/login");
+        res.redirect("/home");
     }
 };
 
