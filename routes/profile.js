@@ -2,7 +2,7 @@ const router = require("express").Router();
 const User = require("../models/User");
 
 //UPDATE USER
-router.get("/profile", (req,res)=>{
+router.get("/my-profile", (req,res)=>{
   res.send("This is your profile page")
 })
 

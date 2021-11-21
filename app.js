@@ -33,7 +33,7 @@ app.use(cookieParser());
 
 app.use("/", homeRoute)
 app.use("/auth", authRoute)
-app.use("/profile", profileRoute)
+app.use("/profile",requireAuth, profileRoute)
 app.use("/notes", requireAuth, notesRoute)
 
 

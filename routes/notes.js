@@ -8,7 +8,7 @@ router.post("/create", async(req,res)=>{
     try{
         const note = new Note(req.body)
         const savedNote = await note.save();
-        res.status(200).json(savedNote)
+        res.status(201).json(savedNote)
     }catch(err){
         res.status(500).json(err)
         res.redirect("/retrospective")
